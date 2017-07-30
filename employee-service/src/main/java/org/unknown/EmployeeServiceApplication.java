@@ -15,6 +15,9 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 
 @EnableDiscoveryClient
@@ -38,20 +41,31 @@ public class EmployeeServiceApplication {
                                 EmployeeRepository employeeRepository) {
     return (args) -> {
       Department prod = departmentRepository.save(new Department("Production"));
-      departmentRepository.save(new Department("QA"));
-      departmentRepository.save(new Department("Marketing"));
-      departmentRepository.save(new Department("Support"));
-
+      Department qa = departmentRepository.save(new Department("QA"));
+      Department support = departmentRepository.save(new Department("Support"));
 
       Position programmer = positionRepository.save(new Position("Software engineer"));
-      positionRepository.save(new Position("Support engineer"));
-      positionRepository.save(new Position("QA engineer"));
+      Position admin = positionRepository.save(new Position("Support engineer"));
+      Position tester = positionRepository.save(new Position("QA engineer"));
       Position boss = positionRepository.save(new Position("Boss"));
 
-      employeeRepository.save(new Employee("Bob", new Date(), boss, prod, 1100000));
-      employeeRepository.save(new Employee("Tom", new Date(), programmer, prod, 500000));
-      employeeRepository.save(new Employee("Joe", new Date(), programmer, prod, 400000));
+      Date startDate = convert(LocalDate.of(2017, 2, 15));
 
+      employeeRepository.save(new Employee("Bob", startDate, boss, prod, 1500000));
+
+      employeeRepository.save(new Employee("Tom", startDate, programmer, prod, 500000));
+      employeeRepository.save(new Employee("Joe", startDate, programmer, prod, 400000));
+      employeeRepository.save(new Employee("Kama", startDate, convert(LocalDate.of(2017, 5, 13)), programmer, prod, 300000));
+
+      employeeRepository.save(new Employee("Mary", startDate, tester, qa, 550000));
+      employeeRepository.save(new Employee("Fred", startDate, convert(LocalDate.of(2017, 6, 25)), tester, qa, 250000));
+
+      employeeRepository.save(new Employee("Nikolas", startDate, admin, support, 650000));
+      employeeRepository.save(new Employee("Toby", startDate, convert(LocalDate.of(2017, 4, 15)), admin, support, 650000));
     };
+  }
+
+  private static Date convert(LocalDate localDate) {
+    return Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
   }
 }

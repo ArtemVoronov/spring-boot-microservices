@@ -60,6 +60,15 @@ public class Employee {
     this.salary = salary;
   }
 
+  public Employee(String name, Date employmentDate, Date dismissalDate, Position position, Department department, Integer salary) {
+    this.name = name;
+    this.employmentDate = employmentDate;
+    this.dismissalDate = dismissalDate;
+    this.position = position;
+    this.department = department;
+    this.salary = salary;
+  }
+
   public Integer getId() {
     return id;
   }
