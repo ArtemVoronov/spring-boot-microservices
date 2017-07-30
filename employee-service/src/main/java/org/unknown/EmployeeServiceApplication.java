@@ -27,10 +27,9 @@ public class EmployeeServiceApplication {
 	}
 
   //TODO: clean
-
   @RequestMapping("/greeting")
   public String greeting() {
-    return "Hello from EurekaClient!";
+    return "Hello from Employee Service!";
   }
 
 	//TODO: clean
