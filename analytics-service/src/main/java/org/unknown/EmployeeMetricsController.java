@@ -1,15 +1,19 @@
 package org.unknown;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.*;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.netflix.feign.EnableFeignClients;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.unknown.converters.LocalDateDeserializer;
 import org.unknown.model.Employee;
-import org.unknown.model.EmployeeList;
 import org.unknown.model.EmployeeMetrics;
+import org.unknown.model.Response;
+
+import java.io.IOException;
+import java.time.*;
+import java.util.List;
 
 
 /**
@@ -21,32 +25,36 @@ public class EmployeeMetricsController {
 
   private static final ObjectMapper MAPPER = new ObjectMapper();
   static {
+    JavaTimeModule javaTimeModule = new JavaTimeModule();
+    javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer());
+    MAPPER.registerModule(javaTimeModule);
     MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
   }
 
   @Autowired
   private EmployeeServiceClient employeeServiceClient;
 
-  //TODO
   @RequestMapping("/employee-metrics")
-  public String getEmployeeMetrics() {
-    try {
-      String json = employeeServiceClient.employee();
-      JsonNode rootNode = MAPPER.readValue(json, JsonNode.class);
-      if (!rootNode.has("_embedded"))
-        throw new IllegalStateException("missed '_embedded' field!");
+  public EmployeeMetrics getEmployeeMetrics() throws IOException {
+    String json = employeeServiceClient.employee();
+    Response response = MAPPER.readValue(json, Response.class);
+    List<Employee> employees = response.getEmployees();
 
-      JsonNode embedded = rootNode.get("_embedded");
-      final EmployeeList employeeList = MAPPER.readValue(embedded.toString(), EmployeeList.class);
+    EmployeeMetrics result = new EmployeeMetrics();
 
-      EmployeeMetrics result = new EmployeeMetrics();
-      result.setCount(employeeList.size());
-      result.setAverageSalary(employeeList.getEmployee().stream().mapToInt(Employee::getSalary).average().getAsDouble());
+    if (employees == null || employees.isEmpty())
+      return result;
 
-      return MAPPER.writeValueAsString(result);
-//      return result;
-    } catch (Exception e) {
-      return "TODO: error handling";
-    }
+    double averageSalary = employees.stream().mapToInt(Employee::getSalary).average().getAsDouble();
+    double averageWorkTimeInDays = employees.stream()
+        .map(employee -> Period.between(employee.getEmploymentDate(), employee.getDismissalDate() == null ? LocalDate.now() : employee.getDismissalDate()))
+        .mapToInt(period -> period.getDays())
+        .average().getAsDouble();
+
+    result.setEmployeeQuantity(employees.size());
+    result.setAverageSalaryInCents(averageSalary);
+    result.setAverageWorkTimeInDays(averageWorkTimeInDays);
+
+    return result;
   }
 }

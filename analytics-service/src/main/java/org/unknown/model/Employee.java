@@ -1,6 +1,6 @@
 package org.unknown.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * Author: Artem Voronov
@@ -9,9 +9,9 @@ public class Employee {
 
   private String name;
 
-  private Date employmentDate;
+  private LocalDate employmentDate;
 
-  private Date dismissalDate;
+  private LocalDate dismissalDate;
 
   private Position position;
 
@@ -27,19 +27,19 @@ public class Employee {
     this.name = name;
   }
 
-  public Date getEmploymentDate() {
+  public LocalDate getEmploymentDate() {
     return employmentDate;
   }
 
-  public void setEmploymentDate(Date employmentDate) {
+  public void setEmploymentDate(LocalDate employmentDate) {
     this.employmentDate = employmentDate;
   }
 
-  public Date getDismissalDate() {
+  public LocalDate getDismissalDate() {
     return dismissalDate;
   }
 
-  public void setDismissalDate(Date dismissalDate) {
+  public void setDismissalDate(LocalDate dismissalDate) {
     this.dismissalDate = dismissalDate;
   }
 

@@ -1,6 +1,5 @@
 package org.unknown;
 
-//TODO: clean
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,30 +11,20 @@ import org.unknown.model.employee.EmployeeRepository;
 import org.unknown.model.position.Position;
 import org.unknown.model.position.PositionRepository;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 
 @EnableDiscoveryClient
 @SpringBootApplication
-@RestController
 public class EmployeeServiceApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
 
-  //TODO: clean
-  @RequestMapping("/greeting")
-  public String greeting() {
-    return "Hello from Employee Service!";
-  }
-
-	//TODO: clean
+	//TODO: solve problem with unit tests
   @Bean
   public CommandLineRunner demo(DepartmentRepository departmentRepository, PositionRepository positionRepository,
                                 EmployeeRepository employeeRepository) {

@@ -1,5 +1,6 @@
 package org.unknown.model.employee;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.unknown.model.department.Department;
@@ -26,13 +27,16 @@ public class Employee {
   @NotEmpty(message = "Employee name is empty")
   private String name;
 
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER)
   @Column(name="employment_date", nullable = false)
   @NotNull(message = "Employment date is null")
   private Date employmentDate;
 
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER)
   @Column(name="dismissal_date")
   private Date dismissalDate;
 
+  @JsonFormat(shape = JsonFormat.Shape.NUMBER)
   @CreationTimestamp
   @Column(name="create_date")
   private Date createDate;

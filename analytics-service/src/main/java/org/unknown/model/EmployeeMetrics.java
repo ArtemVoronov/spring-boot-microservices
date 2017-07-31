@@ -5,23 +5,31 @@ package org.unknown.model;
  */
 public class EmployeeMetrics {
 
-  private int count;
-  private double averageSalary;
+  private int employeeQuantity;
+  private double averageSalaryInCents;
+  private double averageWorkTimeInDays;
 
-  public int getCount() {
-    return count;
+  public int getEmployeeQuantity() {
+    return employeeQuantity;
   }
 
-  public void setCount(int count) {
-    this.count = count;
+  public void setEmployeeQuantity(int employeeQuantity) {
+    this.employeeQuantity = employeeQuantity;
   }
 
-  public double getAverageSalary() {
-    return averageSalary;
+  public double getAverageSalaryInCents() {
+    return averageSalaryInCents;
   }
 
-  public void setAverageSalary(double averageSalary) {
-    this.averageSalary = averageSalary;
+  public void setAverageSalaryInCents(double averageSalaryInCents) {
+    this.averageSalaryInCents = averageSalaryInCents;
   }
 
+  public double getAverageWorkTimeInDays() {
+    return averageWorkTimeInDays;
+  }
+
+  public void setAverageWorkTimeInDays(double averageWorkTimeInDays) {
+    this.averageWorkTimeInDays = averageWorkTimeInDays;
+  }
 }
