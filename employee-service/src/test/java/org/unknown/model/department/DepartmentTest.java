@@ -1,5 +1,6 @@
 package org.unknown.model.department;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,11 @@ import static org.assertj.core.api.Assertions.*;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class DepartmentTest {
+
+  @BeforeClass
+  public static void setUp() {
+    System.setProperty("unit.testing.enabled", "true");
+  }
 
   @Autowired
   private TestEntityManager entityManager;

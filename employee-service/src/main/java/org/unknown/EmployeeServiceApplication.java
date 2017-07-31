@@ -24,11 +24,15 @@ public class EmployeeServiceApplication {
 		SpringApplication.run(EmployeeServiceApplication.class, args);
 	}
 
-	//TODO: solve problem with unit tests
   @Bean
   public CommandLineRunner demo(DepartmentRepository departmentRepository, PositionRepository positionRepository,
                                 EmployeeRepository employeeRepository) {
     return (args) -> {
+
+      boolean unitTestingEnabled = System.getProperty("unit.testing.enabled") == null ? false : Boolean.parseBoolean(System.getProperty("unit.testing.enabled"));
+      if (unitTestingEnabled)
+        return;
+
       Department prod = departmentRepository.save(new Department("Production"));
       Department qa = departmentRepository.save(new Department("QA"));
       Department support = departmentRepository.save(new Department("Support"));

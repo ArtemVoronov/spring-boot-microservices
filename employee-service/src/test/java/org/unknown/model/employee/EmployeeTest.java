@@ -1,5 +1,6 @@
 package org.unknown.model.employee;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,9 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.unknown.model.department.Department;
-import org.unknown.model.department.DepartmentRepository;
 import org.unknown.model.position.Position;
-import org.unknown.model.position.PositionRepository;
 
 import java.util.Date;
 import java.util.List;
@@ -22,6 +21,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 public class EmployeeTest {
+
+  @BeforeClass
+  public static void setUp() {
+    System.setProperty("unit.testing.enabled", "true");
+  }
 
   @Autowired
   private TestEntityManager entityManager;
